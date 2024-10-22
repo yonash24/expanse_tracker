@@ -1,0 +1,8 @@
+● mysql.service - MySQL Community Server
+   Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
+   Active: inactive (dead) since Mon 2024-10-21 14:05:06 IDT; 2h 34min ago
+ Main PID: 1364 (code=exited, status=0/SUCCESS)
+
+Oct 21 14:05:05 yona-Inspiron-3593 systemd[1]: Stopping MySQL Community Server...
+Oct 21 14:05:06 yona-Inspiron-3593 systemd[1]: Stopped MySQL Community Server.
+Warning: Journal has been rotated since unit was started. Log output is incomplete or unavailable.
