@@ -9,3 +9,4 @@ CREATE TABLE expenses(
         category VARCHAR(50),
         extra_info VARCHAR(50)
 )
+

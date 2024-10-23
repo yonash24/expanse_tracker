@@ -39,6 +39,7 @@ class Expense:
                 WHERE id = %s;
             '''
             cursor.execute(query,expense_id)
+            connection.commit()
             cursor.close()
             connection.close()
 
@@ -52,6 +53,7 @@ class Expense:
             '''
             values = (self.date, self.amount, self.description, self.category, self.extra_info, expense_id)
             cursor.execute(query,values)
+            connection.commit()
             cursor.close()
             connection.close()
 
