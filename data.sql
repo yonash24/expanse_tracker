@@ -7,6 +7,6 @@ CREATE TABLE expenses(
         amount INT,
         description VARCHAR(255),
         category VARCHAR(50),
-        extra_info VARCHAR(50)
+        extra_info VARCHAR(255)
 )
 

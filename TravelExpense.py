@@ -10,13 +10,18 @@ class TravelExpense(Expense):
     def add_to_database(self):
         super().add_to_database()
 
-    def remove_from_database(self):
-        super().remove_from_database()
+    def remove_from_database(self,travel_expense_id):
+        super().remove_from_database(travel_expense_id)
 
-    def update_in_database(self):
-        super().update_in_database()
+    def update_in_database(self,travel_expense_id):
+        super().update_in_database(travel_expense_id)
 
     def display_details(self):
         super().display_details()
 
 
+    def get_travel_expenses(self):
+        pass
+
+    def get_daily_travel_expense(self):
+        pass

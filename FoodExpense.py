@@ -11,14 +11,19 @@ class FoodExpense(Expense):
         super().add_to_database()
 
 
-    def remove_from_database(self):
-        super().remove_from_database()
+    def remove_from_database(self,food_expense_id):
+        super().remove_from_database(food_expense_id)
 
 
-    def update_in_database(self):
-        super().update_in_database()
+    def update_in_database(self,food_expense_id):
+        super().update_in_database(food_expense_id)
 
 
     def display_details(self):
         super().display_details()
 
+    def get_food_expenses(self):
+        pass
+
+    def get_daily_food_expense(self):
+        pass

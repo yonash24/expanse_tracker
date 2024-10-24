@@ -1,6 +1,6 @@
-import datetime
+from datetime import datetime
 import mysql.connector
-
+from matplotlib.pyplot import connect
 
 
 class Expense:
@@ -61,8 +61,33 @@ class Expense:
             return f"Date: {self.date}, Amount:{self.amount}, Description:{self.description}, Category:{self.category}, Extra Info:{self.extra_info}"
 
 
+    def get_category_expenses(self, category):
+        connection = self.connect_database()
+        cursor = connection.cursor()
+        query = '''
+            SELECT amount FROM expenses WHERE category = '%s'
+        '''
+        cursor.execute(query,category)
+        amount = cursor.fetchall()
+        cursor.close()
+        connection.close()
 
+        return amount
 
+    def get_category_daily_expenses(self):
+        today = datetime.today()
+
+        connection = self.connect_database()
+        cursor = connection.cursor()
+        query = '''
+                    SELECT amount FROM expenses WHERE date = '%s'
+                '''
+        cursor.execute(query, today)
+        amount = cursor.fetchall()
+        cursor.close()
+        connection.close()
+
+        return amount
 
 
 
