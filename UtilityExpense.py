@@ -1,34 +1,53 @@
 from Expense import Expense
 import mysql.connector
-import pandas as pd
+from datetime import date
 
 class UtilityExpense(Expense):
+    """
+    Represents a utility-specific expense, inheriting from the base Expense class.
+    """
 
+    # Initializes a UtilityExpense object.
     def __init__(self, amount, description, extra_info, category='Utility'):
-        super().__init__(amount, description,category, extra_info)
+        super().__init__(amount, description, category, extra_info)
 
+    # Note: The methods add_to_database, remove_from_database, update_in_database,
+    # and display_details are inherited directly from the Expense class
+    # and do not need to be redefined here unless you want to change their behavior.
 
-    def add_to_database(self):
-        super().add_to_database()
-    def remove_from_database(self, utility_expense_id):
-        super().remove_from_database(utility_expense_id)
-
-    def update_in_database(self,utility_expense_id):
-        super().update_in_database(utility_expense_id)
-
-    def display_details(self):
-        super().display_details()
-
+    # Retrieves all utility expense amounts from the database.
     def get_utility_expenses(self):
-        connect = self.connect_database()
-        cursor = connect.cursor()
-        query = "SELECT amount FROM expenses WHERE category = Food"
-        cursor.execute(query)
-        amount = cursor.fetchall()
-        cursor.close()
-        connect.close()
+        try:
+            connect = self.connect_database()
+            cursor = connect.cursor()
+            query = "SELECT amount FROM expenses WHERE category = %s"
+            cursor.execute(query, ('Utility',))
+            amounts = cursor.fetchall()
+            # The query returns a list of tuples, e.g., [(100,), (50,)]; this extracts the numbers.
+            return [item[0] for item in amounts]
+        except mysql.connector.Error as err:
+            print(f"Error fetching utility expenses: {err}")
+            return []
+        finally:
+            if connect.is_connected():
+                cursor.close()
+                connect.close()
 
-        return amount
-
+    # Calculates the total utility expenses for the current day.
     def get_daily_utility_expense(self):
-        pass
+        try:
+            connect = self.connect_database()
+            cursor = connect.cursor()
+            # This query sums amounts for the 'Utility' category where the date matches today.
+            query = "SELECT SUM(amount) FROM expenses WHERE category = %s AND DATE(date) = %s"
+            cursor.execute(query, ('Utility', date.today()))
+            result = cursor.fetchone()[0]
+            # If no expenses are found, the result is None; we return 0 instead.
+            return float(result) if result is not None else 0.0
+        except mysql.connector.Error as err:
+            print(f"Error fetching daily utility expense: {err}")
+            return 0.0
+        finally:
+            if connect.is_connected():
+                cursor.close()
+                connect.close()
