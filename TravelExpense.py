@@ -1,27 +1,49 @@
+
 from Expense import Expense
 import mysql.connector
+from datetime import date
 
 class TravelExpense(Expense):
+    """
+    מייצג הוצאת נסיעות ספציפית, יורש ממחלקת הבסיס Expense.
+    """
+
 
     def __init__(self, amount, description, extra_info, category='Travel'):
-        super().__init__( amount, description, category,extra_info)
-
-
-    def add_to_database(self):
-        super().add_to_database()
-
-    def remove_from_database(self,travel_expense_id):
-        super().remove_from_database(travel_expense_id)
-
-    def update_in_database(self,travel_expense_id):
-        super().update_in_database(travel_expense_id)
-
-    def display_details(self):
-        super().display_details()
+        super().__init__(amount, description, category, extra_info)
 
 
     def get_travel_expenses(self):
-        pass
+        try:
+            connect = self.connect_database()
+            cursor = connect.cursor()
+            query = "SELECT amount FROM expenses WHERE category = %s"
+            cursor.execute(query, ('Travel',))
+            amounts = cursor.fetchall()
+
+            return [item[0] for item in amounts]
+        except mysql.connector.Error as err:
+            print(f"Error fetching travel expenses: {err}")
+            return []
+        finally:
+            if connect.is_connected():
+                cursor.close()
+                connect.close()
 
     def get_daily_travel_expense(self):
-        pass
+        try:
+            connect = self.connect_database()
+            cursor = connect.cursor()
+
+            query = "SELECT SUM(amount) FROM expenses WHERE category = %s AND DATE(date) = %s"
+            cursor.execute(query, ('Travel', date.today()))
+            result = cursor.fetchone()[0]
+
+            return float(result) if result is not None else 0.0
+        except mysql.connector.Error as err:
+            print(f"Error fetching daily travel expense: {err}")
+            return 0.0
+        finally:
+            if connect.is_connected():
+                cursor.close()
+                connect.close()
