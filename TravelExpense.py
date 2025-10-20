@@ -4,9 +4,7 @@ import mysql.connector
 from datetime import date
 
 class TravelExpense(Expense):
-    """
-    מייצג הוצאת נסיעות ספציפית, יורש ממחלקת הבסיס Expense.
-    """
+
 
 
     def __init__(self, amount, description, extra_info, category='Travel'):
